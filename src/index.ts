@@ -1,3 +1,39 @@
+import * as PATH from "path";
+import * as FS from "fs";
+import { IAppConfig, EDeployType } from "./interface/common";
 import App from "./app";
-import * as config from "../config/config.json";
-new App(config as any);
+
+function main() {
+  let confPath = PATH.join(__dirname, "../config");
+  let conf = PATH.join(confPath, "config.json");
+  if (!FS.existsSync(conf)) {
+    if (!FS.existsSync(confPath)) {
+      FS.mkdirSync(confPath, {
+        recursive: true
+      });
+    }
+
+    let defaultConf: IAppConfig = {
+      server: {
+        port: 8088,
+        name: "OWSS",
+        version: "0.0.1",
+        enableAccessWhitelist: false,
+        deployType: EDeployType.Private
+      },
+      storage: {
+        rootPath: "storage",
+        configPath: "conf",
+        dataPath: "data"
+      }
+    };
+    FS.writeFileSync(conf, JSON.stringify(defaultConf));
+    new App(defaultConf);
+    return;
+  }
+
+  let appConf = FS.readFileSync(conf, "utf-8");
+  new App(JSON.parse(appConf) as IAppConfig);
+}
+
+main();

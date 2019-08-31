@@ -104,6 +104,7 @@ export class Storage {
 
   private getResourceList(
     path: string,
+    search: string = "",
     page: number = 1,
     pageSize: number = 10,
     orderBy: EResourceOrderBy = EResourceOrderBy.time,
@@ -111,13 +112,17 @@ export class Storage {
   ) {
     const startIndex = (page - 1) * pageSize;
     return FS.readdirSync(path)
+      .filter(name => {
+        return name.indexOf(search) !== -1;
+      })
       .map(name => {
         const stat = FS.statSync(PATH.join(path, name));
 
         return {
           name,
           time: stat.mtime.getTime(),
-          type: stat.isDirectory() ? "directory" : "file"
+          type: stat.isDirectory() ? "directory" : "file",
+          size: stat.size
         };
       })
       .sort((a, b) => {
@@ -126,6 +131,11 @@ export class Storage {
           case EResourceOrderBy.name:
             v1 = a.name;
             v2 = b.name;
+            break;
+
+          case EResourceOrderBy.size:
+            v1 = a.size;
+            v2 = b.size;
             break;
 
           default:
@@ -145,6 +155,7 @@ export class Storage {
 
   public list(
     resourceId: string,
+    search: string = "",
     page: number = 1,
     pageSize: number = 10,
     orderBy: EResourceOrderBy = EResourceOrderBy.time,
@@ -158,6 +169,7 @@ export class Storage {
       const currentDirectory = this.getDataDirectory(resourceId);
       const result = this.getResourceList(
         currentDirectory,
+        search,
         page,
         pageSize,
         orderBy,

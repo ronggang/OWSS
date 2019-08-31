@@ -44,6 +44,7 @@ export class StorageController {
     this.service
       .list(
         req.params.resourceId,
+        req.query.search,
         req.query.page,
         req.query.pageSize,
         req.query.orderBy,

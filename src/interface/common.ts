@@ -45,7 +45,8 @@ export interface IStorageServiceConfig {
 
 export enum EResourceOrderBy {
   time = "time",
-  name = "name"
+  name = "name",
+  size = "size"
 }
 
 export enum EResourceOrderMode {
