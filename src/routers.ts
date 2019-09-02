@@ -53,7 +53,7 @@ export class Routers {
     this.server.post(
       "/storage/:resourceId/delete/:path",
       (req: restify.Request, res: restify.Response, next: restify.Next) => {
-        storage.get(req, res, next);
+        storage.delete(req, res, next);
       }
     );
   }
