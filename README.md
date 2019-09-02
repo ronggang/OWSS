@@ -11,7 +11,7 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
 
 ## 如何使用
 - 部署服务器程序；
-- 申请一个资源ID；
+- 向已部署的服务器申请一个资源ID（授权码）；
 - 开始使用
   - 创建文件；
   - 下载文件；
@@ -26,6 +26,37 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   node ./dist/index.js
   ```
 - 默认运行在 `8088` 端口下，可通过 `./config/config.json` （会在第一次运行时自动创建）进行一些参数调整；调整后，重新运行程序即可；
+
+## config 文件说明
+``` jsonc
+{
+  // 服务器配置
+  "server": {
+    // 服务运行的端口号
+    "port": 8118,
+    // 是否启用访问白名单
+    "enableAccessWhitelist": false,
+    // 访问白名单列表
+    "accessWhitelist": [
+      "127.0.0.1",
+      "localhost",
+      "::1"
+    ],
+    // 部署类型（Private, Public）
+    // 设置为私有时，默认仅在本机可申请创建资源，其他接口可正常使用
+    "deployType": "Private"
+  }
+}
+```
+示例：
+``` json
+{
+  "server": {
+    "port": 8118,
+    "deployType": "Private"
+  }
+}
+```
 
 ## 客户端使用
 - 请求根路径默认为： `http(s)://ip_or_host:port/storage/` ，以下简称：`service_url/`
