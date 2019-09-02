@@ -1,9 +1,9 @@
 <p align="center">
 OWSS<br/>
-<a href="https://github.com/ronggang/OWSS/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/release/ronggang/OWSS.svg?label=Latest%20Release"></a>
-<img src="https://img.shields.io/badge/Used-TypeScript-blue.svg">
-<a href="https://github.com/ronggang/OWSS/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/OWSS.svg?label=License"></a>
-<a href="https://t.me/OWSS_Official_Group"><img src="https://img.shields.io/badge/Telegram-Chat-blue.svg?logo=telegram"></a>
+<a href="https://github.com/ronggang/OWSS/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/v/release/ronggang/OWSS?label=Latest%20Release"></a>
+<img src="https://img.shields.io/badge/Used-TypeScript-blue">
+<a href="https://github.com/ronggang/OWSS/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/OWSS?label=License"></a>
+<a href="https://t.me/OWSS_Official_Group"><img src="https://img.shields.io/badge/Telegram-Chat-blue?logo=telegram"></a>
 </p>
 
 ---
@@ -47,5 +47,8 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   - `name`: 文件名称；
   - `data`: 文件内容字段；
 
-### GET `service_url/:resourceId/get/:name`
+### GET `service_url/:resourceId/get/:path`
 - 获取（下载）一个文件
+
+### POST `service_url/:resourceId/delete/:path`
+- 删除一个文件
