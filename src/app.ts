@@ -15,8 +15,7 @@ class App {
   public config: IAppConfig = {
     server: {
       port: 8088,
-      name: "OWSS",
-      version: "0.0.1"
+      name: "OWSS"
     },
     storage: {
       rootPath: "storage",

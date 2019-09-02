@@ -16,7 +16,7 @@ export enum EAuthType {
 
 export interface IAppConfig {
   server: {
-    version: string;
+    version?: string;
     name: string;
     port: number;
     // 启用访问白名单
