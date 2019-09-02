@@ -1,7 +1,7 @@
 import * as PATH from "path";
 import * as FS from "fs";
 import * as CryptoJS from "crypto-js";
-import App from "@/app";
+import App from "../app";
 import {
   IStorageServiceConfig,
   IResourceOptions,
