@@ -22,7 +22,8 @@ export class StorageController {
       .then(result => {
         res.send(200, result, {
           "Content-Type": "application/octet-stream",
-          "Content-Disposition": "attachment; filename=" + req.params.name
+          "Content-Disposition":
+            "attachment; filename=" + (req.params.name || req.params.path)
         });
       })
       .catch(err => {

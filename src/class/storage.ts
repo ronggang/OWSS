@@ -93,7 +93,7 @@ export class Storage {
       const fullPath = PATH.join(currentDirectory, path);
 
       if (FS.existsSync(fullPath)) {
-        FS.readFile(path, (err, data) => {
+        FS.readFile(fullPath, (err, data) => {
           resolve(data);
         });
       } else {
