@@ -18,12 +18,39 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   - 删除文件；
 
 ## 服务器部署
-- 安装 [nodejs](https://nodejs.org) ；
-- 下载最新的发布已编译版本，[点我前往下载](https://github.com/ronggang/OWSS/releases) ；
+### 方式一：Docker 部署
+- 拉取镜像
+  ``` shell
+  docker pull ronggang/owss
+  ```
+- 部署示例
+  ``` shell
+  # Linux
+  docker run -d -v /OWSS/storage:/app/storage -v /OWSS/config:/app/config -p 8088:8088 ronggang/owss
+
+  # Windows
+  docker run -d -v "D:/OWSS/storage":/app/storage -v "D:/OWSS/config":/app/config -p 8088:8088 ronggang/owss
+  ```
+- 环境变量
+  - `DEPLOY_TYPE` : 表示部署类型（Private, Public），如果不指定默认为私有；
+    - 注意：第一次运行时请指定为 `Public` ，避免无法申请资源ID（授权码）；
+- 数据目录
+  - `/app/storage` : 数据存储目录；
+  - `/app/config` : 服务运行配置目录；
+
+### 方式二：从源码部署
+- 安装环境依赖：
+  - [nodejs](https://nodejs.org) ；
+  - [yarn](https://yarnpkg.com) ；
+- 下载最新的发布版本，[点我前往下载](https://github.com/ronggang/OWSS/releases) ；
 - 解压到你想要保存的目录（如：`/OWSS/` ）；
+- 如果您已安装 [git](https://git-scm.com) ，也可直接 `clone` 本项目：
+  ```
+  git clone https://github.com/ronggang/OWSS.git
+  ```
 - 运行程序；
   ```
-  node ./dist/index.js
+  yarn init
   ```
 - 默认运行在 `8088` 端口下，可通过 `./config/config.json` （会在第一次运行时自动创建）进行一些参数调整；调整后，重新运行程序即可；
 

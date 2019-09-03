@@ -14,9 +14,13 @@ export class Routers {
    * 挂载路由
    */
   private mountRoutes(): void {
-    this.server.get("/", function(req, res, next) {
-      // storage.showIndex(req, res, next);
-    });
+    this.server.get(
+      "/storage",
+      (req: restify.Request, res: restify.Response, next: restify.Next) => {
+        res.send(200, "Welcome to use OWSS.");
+        next();
+      }
+    );
 
     let storage = new StorageController(this.app);
 

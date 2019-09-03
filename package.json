@@ -9,7 +9,8 @@
     "test": "tsc && node ./dist/index.js",
     "watch": "tsc -w",
     "build": "tsc",
-    "start": "node ./dist/index.js"
+    "start": "node ./dist/index.js",
+    "init": "yarn install && tsc && node ./dist/index.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

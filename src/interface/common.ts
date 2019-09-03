@@ -24,7 +24,7 @@ export interface IAppConfig {
     // 访问白名单
     accessWhitelist?: string[];
     // 部署类型，设置为私有时，默认仅在内网可申请创建资源
-    deployType?: EDeployType;
+    deployType?: EDeployType | string;
   };
 
   storage: IStorageServiceConfig;
