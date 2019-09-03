@@ -1,6 +1,7 @@
 <p align="center">
 OWSS<br/>
 <a href="https://github.com/ronggang/OWSS/releases/latest" title="GitHub Releases"><img src="https://img.shields.io/github/v/release/ronggang/OWSS?label=Latest%20Release"></a>
+<a href="" title="Docker Pulls"><img src="https://img.shields.io/docker/pulls/ronggang/owss?label=Docker%20Pulls"></a>
 <img src="https://img.shields.io/badge/Used-TypeScript-blue">
 <a href="https://github.com/ronggang/OWSS/LICENSE" title="GitHub license"><img src="https://img.shields.io/github/license/ronggang/OWSS?label=License"></a>
 <a href="https://t.me/OWSS_Official_Group"><img src="https://img.shields.io/badge/Telegram-Chat-blue?logo=telegram"></a>
