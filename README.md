@@ -52,6 +52,7 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   ```
   yarn init
   ```
+
 ## 首次运行说明
 - 首次运行时，会自动创建一个 `./config/config.json` 文件，同时生成一个授权码，请留意 `stdout` 输出内容；
 - 程序默认运行在 `8088` 端口下，可通过 `./config/config.json` 进行参数调整；调整后，重新运行程序即可；

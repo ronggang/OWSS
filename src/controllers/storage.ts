@@ -11,7 +11,7 @@ export class StorageController {
     if (app.config.isFirstTime) {
       this.service.create().then(result => {
         console.log(
-          `\n疑似首次部署，以为您自动生成一个授权码： ${result} ，请妥善保管。`
+          `\n疑似首次部署，已为您自动生成一个授权码： ${result} ，请妥善保管。`
         );
       });
     }
