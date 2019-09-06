@@ -32,12 +32,11 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   # Windows
   docker run -d -v "D:/OWSS/storage":/app/storage -v "D:/OWSS/config":/app/config -p 8088:8088 ronggang/owss
   ```
-- 环境变量
-  - `DEPLOY_TYPE` : 表示部署类型（Private, Public），如果不指定默认为私有；
-    - 注意：第一次运行时请指定为 `Public` ，避免无法申请资源ID（授权码）；
 - 数据目录
   - `/app/storage` : 数据存储目录；
   - `/app/config` : 服务运行配置目录；
+
+
 
 ### 方式二：从源码部署
 - 安装环境依赖：
@@ -53,7 +52,9 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   ```
   yarn init
   ```
-- 默认运行在 `8088` 端口下，可通过 `./config/config.json` （会在第一次运行时自动创建）进行一些参数调整；调整后，重新运行程序即可；
+## 首次运行说明
+- 首次运行时，会自动创建一个 `./config/config.json` 文件，同时生成一个授权码，请留意 `stdout` 输出内容；
+- 程序默认运行在 `8088` 端口下，可通过 `./config/config.json` 进行参数调整；调整后，重新运行程序即可；
 
 ## config 文件说明
 ``` jsonc
@@ -71,7 +72,7 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
       "::1"
     ],
     // 部署类型（Private, Public）
-    // 设置为私有时，默认仅在本机可申请创建资源，其他接口可正常使用
+    // 设置为私有时，默认仅在本机可申请创建资源，其他接口（如上传、下载）可正常使用
     "deployType": "Private"
   }
 }
@@ -87,7 +88,10 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
 ```
 
 ## 客户端使用
-- 请求根路径默认为： `http(s)://ip_or_host:port/storage/` ，以下简称：`service_url/`
+- 请求根路径默认为： `http(s)://ip_or_host:port/storage` ，该地址为服务地址，例：
+  - `http://192.168.10.10:8088/storage`
+
+- 为行文方便，服务地址以下简称：`service_url/`
 
 
 ### GET `service_url/create`

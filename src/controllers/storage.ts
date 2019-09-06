@@ -8,6 +8,13 @@ export class StorageController {
   public service: Storage;
   constructor(public app: App) {
     this.service = new Storage(app);
+    if (app.config.isFirstTime) {
+      this.service.create().then(result => {
+        console.log(
+          `\n疑似首次部署，以为您自动生成一个授权码： ${result} ，请妥善保管。`
+        );
+      });
+    }
   }
 
   /**

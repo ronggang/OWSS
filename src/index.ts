@@ -30,6 +30,7 @@ function main() {
       }
     };
     FS.writeFileSync(conf, JSON.stringify(defaultConf));
+    defaultConf.isFirstTime = true;
     new App(defaultConf);
     return;
   }

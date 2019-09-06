@@ -27,6 +27,7 @@ export interface IAppConfig {
     deployType?: EDeployType | string;
   };
 
+  isFirstTime?: boolean;
   storage: IStorageServiceConfig;
 }
 

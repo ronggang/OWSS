@@ -4,8 +4,6 @@ MAINTAINER ronggang
 EXPOSE 8088
 # 工作路径
 ARG APP_PATH="/app"
-# 设置默认环境变量
-ENV DEPLOY_TYPE=""
 # 设置工作路径
 WORKDIR $APP_PATH
 # 设置虚拟卷，以方便外部指定

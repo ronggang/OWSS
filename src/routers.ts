@@ -105,8 +105,17 @@ export class Routers {
     this.server = server;
     this.mountRoutes();
 
-    server.listen(this.app.config.server.port, () => {
-      console.log("%s running on %s", this.server.name, this.server.url);
+    const port = this.app.config.server.port;
+
+    server.listen(port, () => {
+      console.log(
+        "\n%s 服务已启动 \n本地端口：%s \n部署类型：%s \n服务地址：%s \n使用说明：%s",
+        this.server.name,
+        port,
+        this.app.config.server.deployType,
+        `http://127.0.0.1:${port}/stroage`,
+        "https://github.com/ronggang/OWSS"
+      );
     });
   }
 }
