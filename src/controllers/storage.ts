@@ -85,7 +85,16 @@ export class StorageController {
   ) {
     console.log("create", req.socket.remoteAddress);
     if (this.app.config.server.deployType === EDeployType.Private) {
-      if (!this.app.isWhitelist(req, ["::1", "127.0.0.1", "localhost"])) {
+      const whiteList = ["::1", "127.0.0.1", "localhost"];
+
+      // 如果有定义白名单，不管是否已启用，都允许创建资源
+      if (
+        this.app.config.server.accessWhitelist &&
+        this.app.config.server.accessWhitelist.length > 0
+      ) {
+        whiteList.push(...this.app.config.server.accessWhitelist);
+      }
+      if (!this.app.isWhitelist(req, whiteList)) {
         res.send(401, ERROR.PermissionDenied);
         return;
       }
@@ -94,6 +103,8 @@ export class StorageController {
     this.service
       .create()
       .then(result => {
+        // 输出一下已创建的资源ID
+        console.log("new id: %s", result);
         res.json({
           data: result
         });
