@@ -20,6 +20,7 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
 
 ## 服务器部署
 ### 方式一：Docker 部署
+- 安装 [Docker](https://docker.com) 
 - 拉取镜像
   ``` shell
   docker pull ronggang/owss
@@ -36,6 +37,7 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   - `/app/storage` : 数据存储目录；
   - `/app/config` : 服务运行配置目录；
 
+- 如果您需要部署到 `群晖 NAS` 里，请参考 [Synology 部署说明](https://github.com/ronggang/OWSS/wiki/Install-Synology)；
 
 
 ### 方式二：从源码部署
