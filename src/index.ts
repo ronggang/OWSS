@@ -5,9 +5,14 @@ import App from "./app";
 
 function main() {
   // 由环境变量指定部署类型
-  let deployType = process.env.DEPLOY_TYPE;
-  let confPath = PATH.join(__dirname, "../config");
-  let conf = PATH.join(confPath, "config.json");
+  const deployType = process.env.DEPLOY_TYPE;
+  const confPath = PATH.join(__dirname, "../config");
+  const conf = PATH.join(confPath, "config.json");
+  const packageFile = FS.readFileSync(
+    PATH.join(__dirname, "../package.json"),
+    "utf-8"
+  );
+
   if (!FS.existsSync(conf)) {
     if (!FS.existsSync(confPath)) {
       FS.mkdirSync(confPath, {
@@ -42,6 +47,7 @@ function main() {
     if (deployType) {
       appConf.server.deployType = deployType;
     }
+    appConf.server.version = JSON.parse(packageFile).version;
     new App(appConf);
   } catch (error) {
     console.log(error);
