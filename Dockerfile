@@ -22,6 +22,8 @@ EXPOSE 8088
 ARG APP_PATH="/app"
 # 设置虚拟卷，以方便外部指定
 VOLUME ["$APP_PATH/storage", "$APP_PATH/config"]
+# 复制安装包所需要的文件
+COPY ./package.json $APP_PATH/
 # 设置工作路径
 WORKDIR $APP_PATH
 # 复制依赖包
