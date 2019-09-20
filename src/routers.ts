@@ -108,12 +108,17 @@ export class Routers {
     const port = this.app.config.server.port;
 
     server.listen(port, () => {
+      const storageConfg = this.app.config.storage;
       console.log(
-        "\n%s 服务已启动 \n本地端口：%s \n部署类型：%s \n服务地址：%s \n使用说明：%s",
+        "\n%s 服务已启动 \n本地端口：%s \n部署类型：%s \n自动清理：%s \n服务地址：%s \n%s \n使用说明：%s",
         this.server.name,
         port,
         this.app.config.server.deployType,
+        storageConfg.autoCleanOldResource
+          ? `已启用，每个授权码最多可存储 ${storageConfg.maxResource} 个资源`
+          : "未启用",
         `http://127.0.0.1:${port}/stroage`,
+        "-----------------------------------------",
         "https://github.com/ronggang/OWSS"
       );
     });

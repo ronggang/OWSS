@@ -33,6 +33,7 @@ export interface IAppConfig {
 
 export interface IResourceOptions {
   authType?: EAuthType;
+  resourceCount?: number;
 }
 
 export interface IStorageServiceConfig {
@@ -42,6 +43,7 @@ export interface IStorageServiceConfig {
   maxResource?: number;
   tmpPath?: string;
   resourceBlacklist?: string[];
+  autoCleanOldResource?: boolean;
 }
 
 export enum EResourceOrderBy {

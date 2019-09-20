@@ -26,7 +26,9 @@ function main() {
       storage: {
         rootPath: "storage",
         configPath: "conf",
-        dataPath: "data"
+        dataPath: "data",
+        autoCleanOldResource: false,
+        maxResource: 100
       }
     };
     FS.writeFileSync(conf, JSON.stringify(defaultConf));

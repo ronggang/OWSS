@@ -16,7 +16,8 @@ export class Storage {
     dataPath: "data",
     configPath: "conf",
     rootPath: "storage",
-    maxResource: 100
+    maxResource: 100,
+    autoCleanOldResource: false
   };
 
   constructor(app: App) {
@@ -49,7 +50,9 @@ export class Storage {
     FS.mkdirSync(dataPath, { recursive: true });
     FS.writeFileSync(
       configFile,
-      JSON.stringify(Object.assign({ authType: "none" }, options))
+      JSON.stringify(
+        Object.assign({ authType: "none", resourceCount: 0 }, options)
+      )
     );
   }
 
@@ -102,6 +105,15 @@ export class Storage {
     });
   }
 
+  /**
+   * 获取指定路径下的资源列表
+   * @param path 路径
+   * @param search 搜索关键字
+   * @param page 页码
+   * @param pageSize 需要显示的数量
+   * @param orderBy 排序字段
+   * @param orderMode 排序模式（asc, desc）
+   */
   private getResourceList(
     path: string,
     search: string = "",
@@ -150,7 +162,7 @@ export class Storage {
           return v1.toString().localeCompare(v2);
         }
       })
-      .slice(startIndex, startIndex + pageSize);
+      .slice(startIndex, pageSize === -1 ? undefined : startIndex + pageSize);
   }
 
   public list(
@@ -202,6 +214,7 @@ export class Storage {
       if (stat.isDirectory()) {
         FS.rmdir(fullPath, error => {
           if (!error) {
+            this.resourceCountDecrement(resourceId);
             resolve(true);
           } else {
             reject(error);
@@ -210,6 +223,7 @@ export class Storage {
       } else {
         FS.unlink(fullPath, error => {
           if (!error) {
+            this.resourceCountDecrement(resourceId);
             resolve(true);
           } else {
             reject(error);
@@ -242,6 +256,13 @@ export class Storage {
         return;
       }
 
+      const config = this.getConfig(resourceId);
+      if (config.resourceCount === undefined) {
+        this.resetResourceCount(resourceId);
+      }
+
+      this.cleanOldResource(resourceId);
+
       // 替换非法文件名称
       name = name.replace(/(<|>|\/|\||\\|\:|\"|\*|\?)/g, "_");
 
@@ -251,6 +272,7 @@ export class Storage {
       if (PATH.isAbsolute(data)) {
         FS.rename(data, path, error => {
           if (!error) {
+            this.resourceCountIncrement(resourceId);
             resolve(true);
           } else {
             reject(error);
@@ -261,6 +283,7 @@ export class Storage {
         FS.writeFileSync(path, data);
       }
 
+      this.resourceCountIncrement(resourceId);
       resolve(true);
     });
   }
@@ -305,5 +328,100 @@ export class Storage {
     return CryptoJS.MD5(
       new Date().getTime().toString() + result.join("")
     ).toString();
+  }
+
+  /**
+   * 重置指定资源的文件数量（不包含子目录）
+   * @param resourceId
+   */
+  public resetResourceCount(resourceId: string) {
+    const config = this.getConfig(resourceId);
+    if (config.resourceCount === undefined) {
+      config.resourceCount = 0;
+    }
+
+    const configFile = this.getConfigFile(resourceId);
+
+    const currentDirectory = this.getDataDirectory(resourceId);
+
+    config.resourceCount = FS.readdirSync(currentDirectory, {
+      withFileTypes: true
+    }).filter(item => {
+      return item.isFile();
+    }).length;
+
+    FS.writeFileSync(configFile, JSON.stringify(config));
+  }
+
+  public resourceCountIncrement(resourceId: string): number {
+    const config = this.getConfig(resourceId);
+    if (config.resourceCount === undefined) {
+      config.resourceCount = 0;
+    }
+
+    const configFile = this.getConfigFile(resourceId);
+
+    config.resourceCount++;
+
+    FS.writeFileSync(configFile, JSON.stringify(config));
+
+    return config.resourceCount;
+  }
+
+  public resourceCountDecrement(resourceId: string, count: number = 1): number {
+    const config = this.getConfig(resourceId);
+    if (config.resourceCount === undefined) {
+      config.resourceCount = 0;
+    }
+
+    const configFile = this.getConfigFile(resourceId);
+
+    config.resourceCount = config.resourceCount - count;
+    if (config.resourceCount < 0) {
+      config.resourceCount = 0;
+    }
+
+    FS.writeFileSync(configFile, JSON.stringify(config));
+
+    return config.resourceCount;
+  }
+
+  /**
+   * 清理老文件
+   * @param resourceId
+   */
+  private cleanOldResource(resourceId: string) {
+    if (!this.config.maxResource || !this.config.autoCleanOldResource) {
+      return;
+    }
+
+    const config = this.getConfig(resourceId);
+
+    if (!config.resourceCount) {
+      return;
+    }
+
+    // 如果超出最大数量，则删除最老的文件
+    if (config.resourceCount >= this.config.maxResource) {
+      const cleanCount = config.resourceCount - this.config.maxResource + 1;
+      const currentDirectory = this.getDataDirectory(resourceId);
+      const list = this.getResourceList(
+        currentDirectory,
+        "",
+        1,
+        cleanCount,
+        EResourceOrderBy.time,
+        EResourceOrderMode.asc
+      );
+
+      if (list.length > 0) {
+        list.forEach(item => {
+          const fullPath = PATH.join(currentDirectory, item.name);
+          FS.unlinkSync(fullPath);
+        });
+
+        this.resourceCountDecrement(resourceId, cleanCount);
+      }
+    }
   }
 }

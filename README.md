@@ -77,6 +77,13 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
     // 部署类型（Private, Public）
     // 设置为私有时，默认仅在本机可申请创建资源，其他接口（如上传、下载）可正常使用
     "deployType": "Private"
+  },
+  // 存储配置
+  "storage": {
+    // 最大资源数量
+    "maxResource": 10,
+    // 是否启用自动清理，如果启用该参数，每个授权码最多允许存储 `maxResource` 个文件，超过时会自动删除最老的文件
+    "autoCleanOldResource": false
   }
 }
 ```
