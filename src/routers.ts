@@ -117,7 +117,7 @@ export class Routers {
         storageConfg.autoCleanOldResource
           ? `已启用，每个授权码最多可存储 ${storageConfg.maxResource} 个资源`
           : "未启用",
-        `http://127.0.0.1:${port}/stroage`,
+        `http://127.0.0.1:${port}/storage`,
         "-----------------------------------------",
         "https://github.com/ronggang/OWSS"
       );
