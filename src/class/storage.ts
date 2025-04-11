@@ -105,6 +105,26 @@ export class Storage {
     });
   }
 
+  public getShare(shareId: string): Promise<any> {
+    return new Promise<any>((resolve?: any, reject?: any) => {
+      if (!this.config.sharePath) {
+        reject(null);
+        return;
+      }
+
+      const sharePath = PATH.join(this.config.sharePath, shareId);
+
+      if (FS.existsSync(sharePath)) {
+        const filePath = FS.readFileSync(sharePath);
+        FS.readFile(filePath, (err, data) => {
+          resolve(data);
+        });
+      } else {
+        reject(ERROR.InvalidResourceId);
+      }
+    });
+  }  
+
   /**
    * 获取指定路径下的资源列表
    * @param path 路径
@@ -239,7 +259,7 @@ export class Storage {
    * @param name
    * @param data
    */
-  public add(resourceId: string, name: string, data: any): Promise<any> {
+  public add(resourceId: string, name: string, data: any, share: boolean=false): Promise<any> {
     return new Promise<any>((resolve?: any, reject?: any) => {
       if (!this.checkResourceId(resourceId)) {
         reject(ERROR.InvalidResourceId);
@@ -269,22 +289,30 @@ export class Storage {
       const currentDirectory = this.getDataDirectory(resourceId);
       const path = PATH.join(currentDirectory, name);
 
-      if (PATH.isAbsolute(data)) {
-        FS.rename(data, path, error => {
-          if (!error) {
-            this.resourceCountIncrement(resourceId);
-            resolve(true);
-          } else {
-            reject(error);
-          }
-        });
-        return;
-      } else {
-        FS.writeFileSync(path, data);
+      try {
+        if (PATH.isAbsolute(data)) {
+          FS.renameSync(data, path)
+        } else {
+          FS.writeFileSync(path, data);
+        }
+  
+        this.resourceCountIncrement(resourceId);
+  
+        // 是否共享
+        if (share && this.config.sharePath) {
+          const shareId = this.getNewId();
+          const sharePath = PATH.join(this.config.sharePath, shareId);
+          FS.writeFileSync(sharePath, path);
+          resolve({
+            shareId
+          })
+          return;
+        }
+  
+        resolve(true);
+      } catch (error) {
+        reject(error)
       }
-
-      this.resourceCountIncrement(resourceId);
-      resolve(true);
     });
   }
 

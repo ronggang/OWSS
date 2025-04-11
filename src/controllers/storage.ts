@@ -37,9 +37,34 @@ export class StorageController {
         res.json({
           error: err
         });
+      }).finally(()=>{
+        next();
       });
+  }
 
-    next();
+  /**
+   * 获取共享资源
+   * @param req 
+   * @param res 
+   * @param next 
+   */
+  public getShare(req: restify.Request, res: restify.Response, next: restify.Next) {
+    this.service
+      .getShare(req.params.id)
+      .then(result => {
+        res.send(200, result, {
+          "Content-Type": "application/octet-stream",
+          "Content-Disposition":
+            "attachment; filename=" + (req.params.name || req.params.id)
+        });
+      })
+      .catch(err => {
+        res.json({
+          error: err
+        });
+      }).finally(()=>{
+        next();
+      });
   }
 
   /**
@@ -67,9 +92,9 @@ export class StorageController {
         res.json({
           error: err
         });
+      }).finally(()=>{
+        next();
       });
-
-    next();
   }
 
   /**
@@ -96,7 +121,7 @@ export class StorageController {
       }
       if (!this.app.isWhitelist(req, whiteList)) {
         res.send(401, ERROR.PermissionDenied);
-        return;
+        return next();
       }
     }
 
@@ -113,9 +138,9 @@ export class StorageController {
         res.json({
           error: err
         });
+      }).finally(()=>{
+        next();
       });
-
-    next();
   }
 
   /**
@@ -127,7 +152,7 @@ export class StorageController {
   public add(req: restify.Request, res: restify.Response, next: restify.Next) {
     if (req.files && req.files.data) {
       this.service
-        .add(req.params.resourceId, req.params.name, req.files.data.path)
+        .add(req.params.resourceId, req.params.name, req.files.data.path, req.params.share)
         .then(result => {
           res.json({
             data: result
@@ -137,6 +162,8 @@ export class StorageController {
           res.json({
             error: err
           });
+        }).finally(()=>{
+          next();
         });
     } else if (req.params.type == "dir") {
       this.service
@@ -150,12 +177,13 @@ export class StorageController {
           res.json({
             error: err
           });
+        }).finally(()=>{
+          next();
         });
     } else {
       res.send(400, ERROR.InvalidRequest);
+      next();
     }
-
-    next();
   }
 
   /**
@@ -180,8 +208,8 @@ export class StorageController {
         res.json({
           error: err
         });
+      }).finally(()=>{
+        next();
       });
-
-    next();
   }
 }

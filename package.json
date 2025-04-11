@@ -1,6 +1,6 @@
 {
   "name": "open-web-simple-storage",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Open Web Simple Storage",
   "main": "index.js",
   "author": "culturist",
@@ -9,25 +9,26 @@
     "test": "tsc && node ./dist/index.js",
     "watch": "tsc -w",
     "build": "tsc",
+    "dev": "tsc && node ./dist/index.js",
     "start": "node ./dist/index.js",
-    "init": "yarn install && tsc && node ./dist/index.js",
+    "init": "pnpm install && tsc && node ./dist/index.js",
     "clean": "rm -rf ./node_modules",
-    "install:prod": "yarn install --production"
+    "install:prod": "pnpm install --production"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "crypto-js": "^3.1.9-1",
+    "body-parser": "^2.2.0",
+    "crypto-js": "^4.2.0",
     "extend": "^3.0.2",
-    "request-ip": "^2.1.3",
-    "restify": "^8.4.0"
+    "request-ip": "^3.3.0",
+    "restify": "^11.1.0"
   },
   "devDependencies": {
-    "@types/crypto-js": "^3.1.43",
-    "@types/extend": "^3.0.1",
-    "@types/node": "^12.7.2",
-    "@types/request-ip": "^0.0.34",
-    "@types/restify": "^7.2.12",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "@types/crypto-js": "^4.2.2",
+    "@types/extend": "^3.0.4",
+    "@types/node": "^22.14.0",
+    "@types/request-ip": "^0.0.41",
+    "@types/restify": "^8.5.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

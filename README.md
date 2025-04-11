@@ -43,7 +43,7 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
 ### 方式二：从源码部署
 - 安装环境依赖：
   - [nodejs](https://nodejs.org) ；
-  - [yarn](https://yarnpkg.com) ；
+  - [pnpm](https://pnpm.io/zh/) ；
 - 下载最新的发布版本，[点我前往下载](https://github.com/ronggang/OWSS/releases) ；
 - 解压到你想要保存的目录（如：`/OWSS/` ）；
 - 如果您已安装 [git](https://git-scm.com) ，也可直接 `clone` 本项目：
@@ -52,7 +52,7 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
   ```
 - 运行程序；
   ```
-  yarn init
+  pnpm init
   ```
 
 ## 首次运行说明
@@ -119,9 +119,16 @@ Open Web Simple Storage（OWSS），一个基于 `nodejs` 简单的 Web 存储�
 - 添加一个文件，需提供以下字段：
   - `name`: 文件名称；
   - `data`: 文件内容字段；
+  - `share`: 是否共享文件，默认为 `false`
+    - 当启用共享文件时，创建成功后会同时返回一个 `shareId` ，可根据这个 `shareId` 来访问资源，而不必暴露 `resourceId`
+    - 访问方法：`http(s)://ip_or_host:port/share/shareId` ，如：
+      - `http://192.168.10.10:8088/share/abc1234567890`
 
 ### GET `service_url/:resourceId/get/:path`
 - 获取（下载）一个文件
 
 ### POST `service_url/:resourceId/delete/:path`
 - 删除一个文件
+
+### GET `service_url/share/:id`
+- 获取（下载）一个已共享的文件

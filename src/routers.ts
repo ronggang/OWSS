@@ -60,6 +60,13 @@ export class Routers {
         storage.delete(req, res, next);
       }
     );
+
+    this.server.get(
+      "/share/:id",
+      (req: restify.Request, res: restify.Response, next: restify.Next) => {
+        storage.getShare(req, res, next);
+      }
+    );
   }
 
   /**
@@ -75,10 +82,10 @@ export class Routers {
     );
 
     // 设置允许跨域头信息
-    server.use(function crossOrigin(req, res, next) {
+    server.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "X-Requested-With");
-      return next();
+      next();
     });
 
     // 验证白名单

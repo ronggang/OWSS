@@ -42,6 +42,7 @@ export interface IStorageServiceConfig {
   rootPath: string;
   maxResource?: number;
   tmpPath?: string;
+  sharePath?: string;
   resourceBlacklist?: string[];
   autoCleanOldResource?: boolean;
 }

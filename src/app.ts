@@ -32,9 +32,21 @@ class App {
       this.config.storage.rootPath,
       "tmp"
     );
+    
     if (!FS.existsSync(this.config.storage.tmpPath)) {
       FS.mkdirSync(this.config.storage.tmpPath, { recursive: true });
     }
+
+    this.config.storage.sharePath = PATH.join(
+      this.rootPath,
+      this.config.storage.rootPath,
+      "share"
+    );
+
+    if (!FS.existsSync(this.config.storage.sharePath)) {
+      FS.mkdirSync(this.config.storage.sharePath, { recursive: true });
+    }
+
     this.config = extend(true, this.config, config);
     this.routers.start();
   }
